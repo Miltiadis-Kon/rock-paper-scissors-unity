@@ -9,8 +9,8 @@ public class UIMananger : MonoBehaviour
     public GameMngr manager;
 
     //Define life and death assets
-    public GameObject life = new GameObject();
-    public GameObject death = new GameObject();
+    public GameObject life;
+    public GameObject death;
 
     public Transform userLives;
     public Transform cpuLives;

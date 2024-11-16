@@ -1,6 +1,0 @@
-mediapipe
-opencv-python
-matplotlib
-numpy
-scikit-learn
-seaborn
