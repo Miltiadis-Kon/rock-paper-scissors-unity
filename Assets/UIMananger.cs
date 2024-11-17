@@ -62,20 +62,13 @@ public class UIMananger : MonoBehaviour
 
     public void ShowChoices(string userChoice, string cpuChoice)
     {
+        if (userChoice != "-")
         userOption.text = userOptionDark.text = userChoice;
+
+        if (cpuChoice != "-")
         comOption.text = comOptionDark.text = cpuChoice;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        if(manager.newGame)
-        {
-        string _option = manager.previousOption;
-        userOption.text = userOptionDark.text =  _option;
-        }
-
-    }
 
     public void animateCountdown(int countdown)
     {
@@ -145,8 +138,6 @@ public class UIMananger : MonoBehaviour
     {
         user_lives = total_lives;
         cpu_lives = total_lives;
-        manager.newGame = false;
-
         countdownTxt.text = "Thumb up to play!";
         SetupLives();
     }

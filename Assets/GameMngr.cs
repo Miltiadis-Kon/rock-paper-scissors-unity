@@ -11,7 +11,7 @@ public class GameMngr : MonoBehaviour
         Scissors
     }
 
-    public bool newGame = false; // Flag to prevent new game until current one is finished
+    public bool inGame = false; // Flag to prevent new game until current one is finished
     
     public UIMananger uiManager;
 
@@ -41,24 +41,36 @@ public class GameMngr : MonoBehaviour
 
     public void UpdateUserOption(string option)
     {
-
-        if (option != previousOption)
+        //Debug.Log($"Received message: {option}");
+        // Reduce text preview cluttering
+        if (option == previousOption)
         {
-            if (option=="Yes" && !newGame)
+            return;
+        }
+
+       // Debug.Log($"Last option: {previousOption}");
+        previousOption = option;
+      //  Debug.Log($"Received message: {option}");
+        Debug.Log($"Current option: {previousOption}");
+
+
+        if (true) // If currently in game, filter menu options
+        {
+            uiManager.ShowChoices(previousOption,"-"); // Show option on UI for user to see
+        }
+
+        if (!inGame) // If not in game, filter game options
+        {
+            if (previousOption == "Yes")
             {
-            StartCoroutine(StartCountdownAndPlay());
+                Debug.Log("Starting game...");
+                StartCoroutine(StartCountdownAndPlay()); // Start a new game
             }
-            else if (option == "OK" || option == "Pointer" || (option == "Yes" && newGame) || (option == "No" && newGame))
+            else if (previousOption == "No")
             {
-                option = "";
+                Debug.Log("Quitting game...");
+                UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu"); // Go back to main menu
             }
-            else if (option == "No" && !newGame)
-            {
-                uiManager.ShowChoices("", "Goodbye!");
-                UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
-            }
-            Debug.Log($"Received option: {option}");
-            previousOption = option;
         }
     }
 
@@ -67,7 +79,6 @@ public class GameMngr : MonoBehaviour
 
     public void PlayGame()
     {
-        newGame = false; // Do not allow new game until this one is finished
         if (previousOption=="") 
         {
             Debug.Log("Player choice is empty");
@@ -79,8 +90,14 @@ public class GameMngr : MonoBehaviour
         playerChoice = (Choice)System.Enum.Parse(typeof(Choice), previousOption);
         uiManager.ShowChoices($"{playerChoice}", $"{cpuChoice}");
         DetermineWinner();
-        previousOption = ""; // Reset the player choice 
+        ResetVariables();
         }
+
+    private void ResetVariables()
+    {
+        inGame = false;
+        previousOption = "";
+    }
 
     private void DetermineWinner()
     {
@@ -102,8 +119,9 @@ public class GameMngr : MonoBehaviour
 
     public IEnumerator StartCountdownAndPlay()
     {
-        int countdown = 3;
-        newGame = true;
+        Debug.Log("Enter");
+        inGame = true;
+        int countdown = 5;
         uiManager.ShowChoices("", "Thinking..."); // Clear the choices
         while (countdown > 0)
         {
@@ -114,6 +132,4 @@ public class GameMngr : MonoBehaviour
         uiManager.animateCountdown(countdown);
         PlayGame();
     }
-
-
 }
