@@ -7,41 +7,35 @@ public class AnimationManager : MonoBehaviour
     public Animator userAnimator;
     public Animator computerAnimator;
 
-    public void PlayUserAnimation(string option)
+    public Transform blackHand;
+
+    public void PlayAnimation(string option, bool isUser)
     {
+        Animator animator = isUser ? userAnimator : computerAnimator;
         switch (option)
         {
             case "Rock":
-                userAnimator.Play("White Rock");
+                animator.SetBool("rock", true);
                 break;
             case "Paper":
-                userAnimator.Play("White Paper");
+                animator.SetBool("paper", true);
                 break;
             case "Scissors":
-                userAnimator.Play("White Scissors");
+                animator.SetBool("scissors", true);
                 break;
             default:
                 break;
         }
     }
 
-    public void PlayComputerAnimation(string option)
+    public void ResetAnimations()
     {
-        switch (option)
-        {
-            case "Rock":
-                computerAnimator.Play("Rock Black");
-                break;
-            case "Paper":
-                computerAnimator.Play("Paper Black");
-                break;
-            case "Scissors":
-                computerAnimator.Play("Scissors Black");
-                break;
-            default:
-                break;
-        }
+        userAnimator.SetBool("rock", false);
+        userAnimator.SetBool("paper", false);
+        userAnimator.SetBool("scissors", false);
+
+        computerAnimator.SetBool("rock", false);
+        computerAnimator.SetBool("paper", false);
+        computerAnimator.SetBool("scissors", false);
     }
-
-
 }

@@ -8,12 +8,6 @@ public class UIMananger : MonoBehaviour
 {
     public GameMngr manager;
 
-    //Define life and death assets
-    public GameObject life;
-    public GameObject death;
-
-    public Transform userLives;
-    public Transform cpuLives;
 
     // Define texts
     public TMP_Text userOption;
@@ -27,11 +21,12 @@ public class UIMananger : MonoBehaviour
     public Button guideBtn;
     public Transform guidePanel;
 
-    // Test variables
-    public int total_lives = 5;
-    public int user_lives = 5;
-    public int cpu_lives = 5;
-    
+    private int userWins=0;
+    private int cpuWins=0;
+
+    public TMP_Text userWinsText;
+    public TMP_Text cpuWinsText;
+
 
     public void ShowHideGuide()
     {
@@ -57,7 +52,10 @@ public class UIMananger : MonoBehaviour
 
         guideBtn.onClick.AddListener(ShowHideGuide);
 
-        SetupLives();
+        userWinsText.text = "0";
+        cpuWinsText.text = "0";
+        userWins = 0;
+        cpuWins = 0;
     }
 
     public void ShowChoices(string userChoice, string cpuChoice)
@@ -81,91 +79,23 @@ public class UIMananger : MonoBehaviour
     }
 
 
-    private void SetupLives()
-    {
-        UpdateLives(total_lives, user_lives, userLives);
-        UpdateLives(total_lives, cpu_lives, cpuLives);
-    }
-
     public void ShowWinner(string winner)
     {
         if (winner == "Player")
         {
-            cpu_lives--;
-            UpdateLives(total_lives, cpu_lives, cpuLives);
-            LogWinner(1);
+            userWins++;
+            userWinsText.text = userWins.ToString();
+            countdownTxt.text = "You win!";
         }
         else if (winner == "CPU")
         {
-            user_lives--;
-            UpdateLives(total_lives, user_lives, userLives);
-            LogWinner(-1);
+            cpuWins++;
+            cpuWinsText.text = cpuWins.ToString();
+            countdownTxt.text = "You lost!";
         }
         else
         {
-            LogWinner(0);
-        }
-    }
-
-    private void LogWinner(int winner)
-    {
-        switch (winner)
-        {
-            case 1:
-                countdownTxt.text = "You win!";
-                break;
-            case -1:
-                countdownTxt.text = "You lost!";
-                break;
-            case 0:
-                countdownTxt.text = "It's a tie!";
-                break;
-            case 2:
-                if (user_lives > cpu_lives && cpu_lives <= 0)
-                {
-                    userOption.text = userOptionDark.text = "You won!";
-                }
-                else
-                {
-                    userOption.text = userOptionDark.text = "You lost!";
-                }
-                ResetGame();
-                break;
-        }
-    }
-
-    private void ResetGame()
-    {
-        user_lives = total_lives;
-        cpu_lives = total_lives;
-        countdownTxt.text = "Thumb up to play!";
-        SetupLives();
-    }
-
-
-    private void UpdateLives(int total_lives,int lives,Transform parent)
-    {
-        if (lives< 0)
-        {
-           LogWinner(2);
-            // Game end
-        }
-        else
-        {
-            foreach (Transform child in parent)
-            {
-                Destroy(child.gameObject);
-            }
-
-            for (int i = 0; i < lives; i++)
-            {
-                GameObject newLife = Instantiate(life, parent);
-            }
-
-            for (int i = 0; i < total_lives - lives; i++)
-            {
-                GameObject newDeath = Instantiate(death, parent);
-            }
+            countdownTxt.text = "It's a tie!";
         }
     }
 

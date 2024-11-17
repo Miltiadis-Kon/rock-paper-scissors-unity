@@ -33,7 +33,7 @@ public class GameMngr : MonoBehaviour
     // Update is called once per frame
      void Update()
      {
-         if (Input.GetKeyDown(KeyCode.Space))
+         if (Input.GetKeyDown(KeyCode.Space) && !inGame)
          {
              StartCoroutine(StartCountdownAndPlay());
          }
@@ -98,12 +98,15 @@ public class GameMngr : MonoBehaviour
         uiManager.countdownTxt.text = ""; // Clear countdown text
         uiManager.ShowChoices(" ", " "); // Clear choices text
 
-        animationManager.PlayUserAnimation(playerChoice); // Play user animation
-        animationManager.PlayComputerAnimation(cpuChoice); 
-        yield return new WaitForSeconds(7); // Wait for animations to finish
-
+        animationManager.PlayAnimation(playerChoice,true); // Play user animation
+        animationManager.PlayAnimation(cpuChoice,false); 
+        yield return new WaitForSeconds(4); // Wait for animations to finish
+        animationManager.ResetAnimations(); // Reset animations
         uiManager.ShowChoices($"{playerChoice}", $"{cpuChoice}"); // Show choices on UI
         DetermineWinner(); // Determine the winner
+        yield return new WaitForSeconds(3); // Wait for winner to be shown
+        uiManager.ShowChoices("Thumbs Down", "Thumbs Up"); // Ask user to play again
+        uiManager.countdownTxt.text = "Play Again ?"; // Clear countdown text
         ResetVariables(); // Reset variables
     }
 
