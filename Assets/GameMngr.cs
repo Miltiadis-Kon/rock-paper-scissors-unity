@@ -12,6 +12,7 @@ public class GameMngr : MonoBehaviour
     }
 
     public bool inGame = false; // Flag to prevent new game until current one is finished
+    public bool lockInput = false; // Flag to prevent ui input until current game is finished
     
     public UIMananger uiManager;
     public AnimationManager animationManager;
@@ -37,25 +38,30 @@ public class GameMngr : MonoBehaviour
          {
              StartCoroutine(StartCountdownAndPlay());
          }
+
+         UpdateUserOption(previousOption);
      }
 
-
-    public void UpdateUserOption(string option)
+    public void InputHandler(string message)
     {
         //Debug.Log($"Received message: {option}");
         // Reduce text preview cluttering
-        if (option == previousOption)
+        if (message == previousOption)
         {
             return;
         }
 
        // Debug.Log($"Last option: {previousOption}");
-        previousOption = option;
+        previousOption = message;
       //  Debug.Log($"Received message: {option}");
         Debug.Log($"Current option: {previousOption}");
+    }
 
 
-        if (inGame) // If currently in game, filter menu options
+    public void UpdateUserOption(string option)
+    {
+
+        if (inGame && !lockInput) // If currently in game and input is not locked
         {
             uiManager.ShowChoices(previousOption,"-"); // Show option on UI for user to see
         }
@@ -80,7 +86,8 @@ public class GameMngr : MonoBehaviour
 
     public void PlayGame()
     {
-        if (previousOption=="") 
+        lockInput = true;
+        if (previousOption==""|| previousOption=="Yes" || previousOption=="No") 
         {
             Debug.Log("Player choice is empty");
             string[] options = { "Rock", "Paper", "Scissors" };
@@ -114,6 +121,7 @@ public class GameMngr : MonoBehaviour
     {
         inGame = false;
         previousOption = "";
+        lockInput = false;
     }
 
     private void DetermineWinner()

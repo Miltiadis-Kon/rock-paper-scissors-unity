@@ -42,11 +42,17 @@ public class udp : MonoBehaviour
     {
         // Do something with the received message
     //    Debug.Log($"Received message: {message}");
-        manager.UpdateUserOption(message);
+        manager.InputHandler(message);
     }
 
     // Close socket on exit 
     private void OnApplicationQuit()
+    {
+        udpClient.Close();
+    }
+
+    // Close socket on destroy
+    private void OnDestroy()
     {
         udpClient.Close();
     }
