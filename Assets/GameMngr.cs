@@ -14,6 +14,7 @@ public class GameMngr : MonoBehaviour
     public bool inGame = false; // Flag to prevent new game until current one is finished
     
     public UIMananger uiManager;
+    public AnimationManager animationManager;
 
     public string previousOption = "";
 
@@ -54,7 +55,7 @@ public class GameMngr : MonoBehaviour
         Debug.Log($"Current option: {previousOption}");
 
 
-        if (true) // If currently in game, filter menu options
+        if (inGame) // If currently in game, filter menu options
         {
             uiManager.ShowChoices(previousOption,"-"); // Show option on UI for user to see
         }
@@ -88,10 +89,23 @@ public class GameMngr : MonoBehaviour
 
         cpuChoice = (Choice)Random.Range(0, 3);
         playerChoice = (Choice)System.Enum.Parse(typeof(Choice), previousOption);
-        uiManager.ShowChoices($"{playerChoice}", $"{cpuChoice}");
-        DetermineWinner();
-        ResetVariables();
+
+        StartCoroutine(AnimationHandler(playerChoice.ToString(), cpuChoice.ToString()));
         }
+
+    public IEnumerator AnimationHandler(string playerChoice,string cpuChoice)
+    {
+        uiManager.countdownTxt.text = ""; // Clear countdown text
+        uiManager.ShowChoices(" ", " "); // Clear choices text
+
+        animationManager.PlayUserAnimation(playerChoice); // Play user animation
+        animationManager.PlayComputerAnimation(cpuChoice); 
+        yield return new WaitForSeconds(7); // Wait for animations to finish
+
+        uiManager.ShowChoices($"{playerChoice}", $"{cpuChoice}"); // Show choices on UI
+        DetermineWinner(); // Determine the winner
+        ResetVariables(); // Reset variables
+    }
 
     private void ResetVariables()
     {
