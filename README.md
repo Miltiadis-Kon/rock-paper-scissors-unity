@@ -27,12 +27,14 @@ A Unity-based Rock Paper Scissors game that uses hand gesture recognition throug
 
 1. Launch the game
 2. Show your hand to the camera
-3. Make one of three gestures:
+3. Show a thumbs up to start a new round
+4. Make one of three gestures:
    - Closed fist for Rock
    - Open palm for Paper
    - Two fingers for Scissors
-4. Face the camera and ensure good lighting for best gesture recognition
-5. Show a thumbs up to start a new round
+5. Face the camera and ensure good lighting for best gesture recognition.
+6. Show a thumbs down to stop playing
+
 
 ## Installation
 
