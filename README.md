@@ -2,9 +2,9 @@
 
 A Unity-based Rock Paper Scissors game that uses hand gesture recognition through MediaPipe and OpenCV for player input.
 
-## Playthrough
+## Output
 
-[![Rock Paper Scissors Demo](Images/demo.gif)]
+![Rock Paper Scissors Demo](Images/demo.gif)
 
 ## Features
 
