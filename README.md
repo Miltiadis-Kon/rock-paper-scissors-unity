@@ -4,7 +4,7 @@ A Unity-based Rock Paper Scissors game that uses hand gesture recognition throug
 
 ## Playthrough
 
-[![Rock Paper Scissors Demo](Images/demo.mp4)]
+[![Rock Paper Scissors Demo](Images/demo.gif)]
 
 ## Features
 
